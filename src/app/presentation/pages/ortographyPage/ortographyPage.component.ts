@@ -1,42 +1,56 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ChatMessageComponent, FileMessageEvent, MyMessageComponent, TextMessageBoxComponent, TextMessageBoxEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TypingLoaderComponent } from "@components/index";
-import { Message } from "@interfaces/index";
-import { OpenAiService } from "app/presentation/services/openai.service";
 
-@Component({
-    selector: 'app-ortography-page',
-    standalone: true,
-    imports: [
-        CommonModule,
-        ChatMessageComponent,
-        MyMessageComponent,
-        TypingLoaderComponent,
-        TextMessageBoxComponent,
-        TextMessageBoxFileComponent,
-        TextMessageBoxSelectComponent
-    ],
-    templateUrl: './ortographyPage.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export default class OrtographyPageComponent {
-  public messages = signal<Message[]>([]);
-  public isLoading = signal<boolean>(false);
-  // public openAiServ = inject( OpenAiService );
+import { ChatMessageComponent, GptMessageOrtographyComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageBoxEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TypingLoaderComponent } from '@components/index';
+import { OpenAiService } from 'app/presentation/services/openai.service';
+import { Message } from '@interfaces/index';
 
-  constructor(
-    public openAiSer: OpenAiService
-  ){}
+@Component( {
+  selector: 'app-orthography-page',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ChatMessageComponent,
+    GptMessageOrtographyComponent,
+    MyMessageComponent,
+    TypingLoaderComponent,
 
-  handleMessage( prompt: string ){
-    console.log({prompt});
-  }
+    TextMessageBoxComponent,
+    TextMessageBoxFileComponent,
+    TextMessageBoxSelectComponent,
+  ],
+  templateUrl: './ortographyPage.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+} )
+export default class OrthographyPageComponent {
 
-  handleMessageWithFile({ prompt, file }: FileMessageEvent){
-    console.log({ prompt, file});
-  }
+  public messages = signal<any[]>([]);
+  public isLoading = signal(false);
+  public openAiService = inject( OpenAiService );
 
-  handleMessageWithSelect({prompt, selectedOption}: TextMessageBoxEvent){
-    console.log({prompt, selectedOption});
+  handleMessage( prompt: string ) {
+
+    this.isLoading.set(true);
+    this.messages.update( (prevMessages) => [
+      ...prevMessages,
+      {
+        isGpt: false,
+        text: prompt
+      }
+    ])
+
+    this.openAiService.checkOrtography( prompt )
+      .subscribe((resp)=> {
+        this.isLoading.set(false);
+
+        this.messages.update( prevMessages => [
+          ...prevMessages,
+          {
+            isGpt: true,
+            text: resp.message,
+            info: resp,
+          }
+        ])
+      })
   }
 }
