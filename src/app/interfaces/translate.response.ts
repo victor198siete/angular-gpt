@@ -1,4 +1,3 @@
 export interface TranslateResponse {
-  role: string;
-  content: string;
+  message: string;
 }

@@ -1,7 +1,8 @@
-import { TranslateResponse } from "@interfaces/index";
 import { environment } from "environments/environment.development";
 
-export const translateUseCase = async ( prompt:string) => {
+import type { TranslateResponse } from "@interfaces/index";
+
+export const translateUseCase = async ( prompt:string, lang:string) => {
   try {
 
     const resp = await fetch(`${environment.backendApi}/translate`, {
@@ -9,24 +10,23 @@ export const translateUseCase = async ( prompt:string) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({prompt})
+      body: JSON.stringify({prompt, lang})
     });
 
-    if (!resp.ok ) throw new Error('No se pudo realizar la Traducción!');
+    if (!resp.ok ) throw new Error('No se pudo realizar la traducción!');
 
-    const data = await resp.json() as TranslateResponse;
+    const { message } = await resp.json() as TranslateResponse;
 
     return {
       ok: true,
-      ...data,
+      message: message,
     }
 
   } catch (error) {
     console.log(error);
     return {
       ok: false,
-      role: '',
-      content: 'No se pudo realizar la Traducción!'
+      content: 'No se pudo realizar la traducción!'
     }
   }
 }

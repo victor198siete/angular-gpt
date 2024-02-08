@@ -26,11 +26,11 @@ export class OpenAiService {
   }
 
   travel(prompt: string){
-    return travelUseCase(prompt);
+    return from(travelUseCase(prompt));
   }
 
-  translate(prompt: string){
-    return translateUseCase(prompt);
+  translate(prompt: string, lang: string){
+    return from(translateUseCase(prompt, lang));
   }
 
 

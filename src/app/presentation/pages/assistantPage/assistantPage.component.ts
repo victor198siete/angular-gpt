@@ -39,7 +39,7 @@ export default class AssistantPageComponent {
     ])
 
     this.openAiService.travel( prompt )
-      .then((resp)=> {
+      .subscribe((resp)=> {
         this.isLoading.set(false);
 
         this.messages.update( prevMessages => [
