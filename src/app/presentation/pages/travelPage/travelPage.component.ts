@@ -1,28 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChatVlMessageComponent } from '@components/chat-bubbles/chat-vl-message/chat-vl-message.component';
+import { ChatVlResponseComponent } from '@components/chat-bubbles/chat-vl-response/chat-vl-response.component';
 
-import { ChatMessageComponent, GptMessageOrtographyComponent, MyMessageComponent, TextMessageBoxComponent, TextMessageBoxEvent, TextMessageBoxFileComponent, TextMessageBoxSelectComponent, TypingLoaderComponent } from '@components/index';
+import { ChatMessageComponent, GptMessageOrtographyComponent, MyMessageComponent, TypingLoaderComponent, TextMessageBoxComponent } from '@components/index';
 import { OpenAiService } from 'app/presentation/services/openai.service';
 
-@Component( {
-  selector: 'app-orthography-page',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ChatMessageComponent,
-    GptMessageOrtographyComponent,
-    MyMessageComponent,
-    TypingLoaderComponent,
-
-    TextMessageBoxComponent,
-    TextMessageBoxFileComponent,
-    TextMessageBoxSelectComponent,
-  ],
-  templateUrl: './ortographyPage.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-} )
-export default class OrthographyPageComponent {
-
+@Component({
+    selector: 'app-travel-page',
+    standalone: true,
+    imports: [
+      CommonModule,
+      ChatMessageComponent,
+      MyMessageComponent,
+      TypingLoaderComponent,
+      TextMessageBoxComponent,
+      GptMessageOrtographyComponent,
+      ChatVlMessageComponent,
+      ChatVlResponseComponent,
+    ],
+    templateUrl: './travelPage.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TravelPageComponent {
   public messages = signal<any[]>([]);
   public isLoading = signal(false);
   public openAiService = inject( OpenAiService );
@@ -51,5 +51,8 @@ export default class OrthographyPageComponent {
           }
         ])
       })
+
+
   }
+
 }

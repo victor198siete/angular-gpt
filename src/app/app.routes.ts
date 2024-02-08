@@ -51,6 +51,16 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'travel',
+        loadComponent: () =>
+          import('./presentation/pages/assistantPage/assistantPage.component'),
+        data: {
+          icon: 'fa-solid fa-plane',
+          title: 'Viajes',
+          description: 'Asistente de Viajes',
+        },
+      },
+      {
         path: 'text-to-audio',
         loadComponent: () =>
           import(
