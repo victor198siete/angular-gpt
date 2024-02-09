@@ -37,6 +37,8 @@ export default class TranslatePageComponent {
     { id: 'mandarín', text: 'Mandarín' },
     { id: 'portugués', text: 'Portugués' },
     { id: 'ruso', text: 'Ruso' },
+    { id: 'bulgaro', text: 'Bulgaro' },
+
   ]);
 
   handleMessageWithSelect( { prompt, selectedOption }: TextMessageBoxEvent ) {

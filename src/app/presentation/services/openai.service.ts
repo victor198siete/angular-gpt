@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { from } from 'rxjs';
 
-import { ortographyUseCase,prosConsUseCase, prosConsStreamUseCase, prosConsStreamUseCaseFunction, translateUseCase, travelUseCase } from '@use-cases/index';
+import { ortographyUseCase,prosConsUseCase, prosConsStreamUseCase, prosConsStreamUseCaseFunction, translateUseCase, travelUseCase, textToAudioUseCase } from '@use-cases/index';
 
 @Injectable({providedIn: 'root'})
 export class OpenAiService {
@@ -31,6 +31,10 @@ export class OpenAiService {
 
   translate(prompt: string, lang: string){
     return from(translateUseCase(prompt, lang));
+  }
+
+  textToAudio(prompt: string, voice: string){
+    return from(textToAudioUseCase(prompt, voice));
   }
 
 
